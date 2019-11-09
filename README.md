@@ -1,2 +1,2 @@
-# cmhd
-CMHD - Compact representation of Multidimensional data on Hierarchical Domains
+# CMHD
+Compact representation of Multidimensional data on Hierarchical Domains
