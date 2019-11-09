@@ -16,17 +16,21 @@ my aim to implement a succint n-dimensional data structure such that it serves
 as open-source documentation of this type of structures and as a dependency for
 my detlqav project.
 
+# Roadmap
+
+The following are the Succint data Structures needed in order to implement the
+CMHD.
+
+- [ ] Bitmap
+- [ ] Louds
+- [ ] K^N Irregular Treap
+- [ ] CMHD
+
 # Why F#?
 
 F# is a mature, open source, cross-platform, strongly typed, functional-first 
 programming language. It's compact, expressive, explicit and I love the way 
 data is represented and queried in it.
-
-# Roadmap
-- [ ] Bitmap
-- [ ] Louds
-- [ ] K^N Irregular Treap
-- [ ] CMHD
 
 # Credits
 
@@ -38,20 +42,20 @@ applications.
 
 # References
 
-## CMHD
+### CMHD
 - https://core.ac.uk/download/pdf/80522508.pdf
 - https://dsi.face.ubiobio.cl/mcaniupan/pdfs/SCCC2018CamReady.pdf
 
-## K^N Irregular Treaps
+### K^N Irregular Treaps
 
 - https://core.ac.uk/download/pdf/80522508.pdf (2)
 - https://dsi.face.ubiobio.cl/mcaniupan/pdfs/SCCC2017.pdf (k^2 base structure)
 
-## LOUDS
+### LOUDS
 
 - https://core.ac.uk/download/pdf/80522508.pdf (1)
 - https://www.computer.org/csdl/proceedings-article/focs/1989/063533/12OmNx2QUHQ (Download)
 
-## Bitmap
+### Bitmap
 
 - https://users.dcc.uchile.cl/~gnavarro/algoritmos/ps/wea05.pdf
