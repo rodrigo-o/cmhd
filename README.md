@@ -27,3 +27,31 @@ data is represented and queried in it.
 - [ ] Louds
 - [ ] K^N Irregular Treap
 - [ ] CMHD
+
+# Credits
+
+I'd like to thank the Teams at Database Lab., University of A Coruña, Spain; 
+Dept. of Computer Science, University of Chile, Chile: and the University of 
+Bio-Bioin, Chile; for they high quality work who inspired me in my searching of 
+a better way to do Dimensional querying as a service to use in data driven
+applications.
+
+# References
+
+## CMHD
+- https://core.ac.uk/download/pdf/80522508.pdf
+- https://dsi.face.ubiobio.cl/mcaniupan/pdfs/SCCC2018CamReady.pdf
+
+## K^N Irregular Treaps
+
+- https://core.ac.uk/download/pdf/80522508.pdf (2)
+- https://dsi.face.ubiobio.cl/mcaniupan/pdfs/SCCC2017.pdf (k^2 base structure)
+
+## LOUDS
+
+- https://core.ac.uk/download/pdf/80522508.pdf (1)
+- https://www.computer.org/csdl/proceedings-article/focs/1989/063533/12OmNx2QUHQ (Download)
+
+## Bitmap
+
+- https://users.dcc.uchile.cl/~gnavarro/algoritmos/ps/wea05.pdf
