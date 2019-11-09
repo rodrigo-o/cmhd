@@ -21,3 +21,9 @@ my detlqav project.
 F# is a mature, open source, cross-platform, strongly typed, functional-first 
 programming language. It's compact, expressive and explicit and I love the way 
 data is represented in it.
+
+# Roadmap
+- [ ] Bitmap
+- [ ] Louds
+- [ ] K^N Irregular Treap
+- [ ] CMHD
