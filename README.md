@@ -19,8 +19,8 @@ my detlqav project.
 # Why F#?
 
 F# is a mature, open source, cross-platform, strongly typed, functional-first 
-programming language. It's compact, expressive and explicit and I love the way 
-data is represented in it.
+programming language. It's compact, expressive, explicit and I love the way 
+data is represented and queried in it.
 
 # Roadmap
 - [ ] Bitmap
