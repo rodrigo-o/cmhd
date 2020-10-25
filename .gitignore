@@ -9,6 +9,11 @@ Debug
 obj
 bin
 .ionide
+old_implementation
+packages/
+**/packages/*
+.paket/
+.fake/
 
 
 ### Linux ###
