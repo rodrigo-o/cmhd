@@ -21,7 +21,7 @@ my detlqav project.
 The following are the succint data structures needed in order to implement the
 CMHD.
 
-- [ ] Bitmap
+- [x] Bitmap
 - [ ] Louds
 - [ ] K^N Irregular Treap
 - [ ] CMHD
