@@ -1,74 +1,43 @@
-// --------------------------------------------------------------------------------------
-// FAKE build script
-// --------------------------------------------------------------------------------------
+#r "paket:
+nuget FSharp.Core 4.7.0
+nuget Fake.Core
+nuget Fake.IO
+nuget Fake.DotNet //"
 
-#r "./packages/build/FAKE/tools/FakeLib.dll"
+#load ".fake/build.fsx/intellisense.fsx"
 
-open Fake
-open System
+open Fake.Core
+open Fake.DotNet
+open Fake.IO
+open Fake.IO.Globbing.Operators
+open Fake.Core.TargetOperators
 
-// --------------------------------------------------------------------------------------
-// Build variables
-// --------------------------------------------------------------------------------------
+Target.initEnvironment ()
 
-let buildDir  = "./build/"
-let appReferences = !! "/**/*.fsproj"
-let mutable dotnetExePath = "dotnet"
-
-// --------------------------------------------------------------------------------------
-// Helpers
-// --------------------------------------------------------------------------------------
-
-let run' timeout cmd args dir =
-    if execProcess (fun info ->
-        info.FileName <- cmd
-        if not (String.IsNullOrWhiteSpace dir) then
-            info.WorkingDirectory <- dir
-        info.Arguments <- args
-    ) timeout |> not then
-        failwithf "Error while running '%s' with args: %s" cmd args
-
-let run = run' System.TimeSpan.MaxValue
-
-let runDotnet workingDir args =
-    let result =
-        ExecProcess (fun info ->
-            info.FileName <- dotnetExePath
-            info.WorkingDirectory <- workingDir
-            info.Arguments <- args) TimeSpan.MaxValue
-    if result <> 0 then failwithf "dotnet %s failed" args
-
-// --------------------------------------------------------------------------------------
-// Targets
-// --------------------------------------------------------------------------------------
-
-Target "Clean" (fun _ ->
-    CleanDirs [buildDir]
+Target.create "Clean" (fun _ ->
+    !! "src/**/bin"
+    ++ "src/**/obj"
+    |> Shell.cleanDirs 
 )
 
-
-Target "Restore" (fun _ ->
-    appReferences
-    |> Seq.iter (fun p ->
-        let dir = System.IO.Path.GetDirectoryName p
-        runDotnet dir "restore"
-    )
+Target.create "Build" (fun _ ->
+    !! "src/**/*.*proj"
+    |> Seq.iter (DotNet.build id)
 )
 
-Target "Build" (fun _ ->
-    appReferences
-    |> Seq.iter (fun p ->
-        let dir = System.IO.Path.GetDirectoryName p
-        runDotnet dir "build"
-    )
+Target.create "Test" (fun _ ->
+    !! "tests/*/"
+    |> Seq.iter (DotNet.test id)
 )
 
-// --------------------------------------------------------------------------------------
-// Build order
-// --------------------------------------------------------------------------------------
+Target.create "All" ignore
 
 "Clean"
-  ==> "Restore"
-  ==> "Build"
+    ==> "Build"
 
-RunTargetOrDefault "Build"
+"Clean"
+    ==> "Build"
+    ==> "Test"
+    ==> "All"
+
+Target.runOrDefault "All"

@@ -1,13 +1,32 @@
-RESTRICTION: || (== netcoreapp2.1) (== netcoreapp3.0)
+RESTRICTION: == net5.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Expecto (8.12)
-      FSharp.Core (>= 4.3.4)
-      Mono.Cecil (>= 0.10.3)
-    FSharp.Core (4.7)
-    Mono.Cecil (0.11.1)
+    FSharp.Core (5.0)
 
-GROUP Build
+GROUP Test
+RESTRICTION: == net5.0
 NUGET
-  remote: https://www.nuget.org/api/v2
-    FAKE (5.16)
+  remote: https://api.nuget.org/v3/index.json
+    Expecto (9.0.2)
+      FSharp.Core (>= 4.6)
+      Mono.Cecil (>= 0.11.2)
+    FSharp.Core (5.0)
+    Microsoft.CodeCoverage (16.7.1)
+    Microsoft.NET.Test.Sdk (16.7.1)
+      Microsoft.CodeCoverage (>= 16.7.1)
+      Microsoft.TestPlatform.TestHost (>= 16.7.1)
+    Microsoft.TestPlatform.ObjectModel (16.7.1)
+      NuGet.Frameworks (>= 5.0)
+    Microsoft.TestPlatform.TestHost (16.7.1)
+      Microsoft.TestPlatform.ObjectModel (>= 16.7.1)
+      Newtonsoft.Json (>= 9.0.1)
+    Mono.Cecil (0.11.3)
+    Newtonsoft.Json (12.0.3)
+    NuGet.Frameworks (5.7)
+    System.Collections.Immutable (1.7.1)
+    Unquote (5.0)
+      FSharp.Core (>= 4.6.2)
+    YoloDev.Expecto.TestSdk (0.9.2)
+      Expecto (>= 9.0 < 10.0)
+      FSharp.Core (>= 4.6)
+      System.Collections.Immutable (>= 1.5 < 2.0)

@@ -18,7 +18,7 @@ my detlqav project.
 
 # Roadmap
 
-The following are the Succint data Structures needed in order to implement the
+The following are the succint data structures needed in order to implement the
 CMHD.
 
 - [ ] Bitmap
@@ -59,3 +59,7 @@ applications.
 ### Bitmap
 
 - https://users.dcc.uchile.cl/~gnavarro/algoritmos/ps/wea05.pdf
+
+# License
+
+MIT © Rodrigo Oliveri

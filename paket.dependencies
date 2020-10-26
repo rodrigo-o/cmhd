@@ -1,10 +1,13 @@
 source https://api.nuget.org/v3/index.json
+framework: net5.0
+nuget FSharp.Core 5.0
 
-framework: auto-detect
-nuget Expecto
-nuget FSharp.Core
+group Test
+    source https://api.nuget.org/v3/index.json
+    framework: net5.0
 
-group Build
-source https://www.nuget.org/api/v2
-
-nuget FAKE
+    nuget FSharp.Core 5.0
+    nuget Microsoft.NET.Test.Sdk
+    nuget YoloDev.Expecto.TestSdk
+    nuget Expecto
+    nuget Unquote

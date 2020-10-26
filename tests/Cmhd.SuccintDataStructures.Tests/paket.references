@@ -1,2 +1,6 @@
-FSharp.Core
-Expecto
+group Test
+    FSharp.Core
+    Microsoft.NET.Test.Sdk
+    YoloDev.Expecto.TestSdk
+    Expecto
+    Unquote
