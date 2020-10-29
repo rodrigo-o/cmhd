@@ -13,7 +13,7 @@ module Bitmap =
         
     [<Tests>]
     let creationCases =
-        testList "Bitmap.Creation." [
+        testList "Bitmap.Creation" [
             testCase "cant create an empty bitmap" <| fun () -> 
                 Bitmap.ofByteArray [||] =! (Error <| BitmapError EmptyBitmap)
                 
@@ -33,7 +33,7 @@ module Bitmap =
 
     [<Tests>]
     let rankCases =
-        testList "Bitmap.Rank." [
+        testList "Bitmap.Rank" [
             testCase "up to the 1st position 111011010110010101 has 1 1s" <| fun () -> 
                 bitmap |> Bitmap.rank 1  =! Ok 1
             testCase "up to the 1st position 111011010110010101 has 0 0s" <| fun () -> 
@@ -78,7 +78,7 @@ module Bitmap =
 
     [<Tests>]
     let selectCases =
-        testList "Bitmap.Select." [  
+        testList "Bitmap.Select" [  
             testCase "the 1st 1 in 111011010110010101 is at position 1" <| fun () -> 
                 bitmap |> Bitmap.select 1 =! Ok 1
             testCase "the 2nd 1 in 111011010110010101 is at position 2" <| fun () -> 
@@ -121,7 +121,7 @@ module Bitmap =
 
     [<Tests>]
     let nthBitCases =
-        testList "Bitmap.NthBit." [
+        testList "Bitmap.NthBit" [
             testCase  "1st bit of 111011010110010101 is 1"  <| fun() -> 
                 bitmap |> Bitmap.nthBit 1  =! Ok 1
             testCase  "2nd bit of 111011010110010101 is 1"  <| fun() ->
@@ -158,7 +158,7 @@ module Bitmap =
 
     [<Tests>]
     let isValidBitCases =
-        testList "Bitmap.IsValidBit." [
+        testList "Bitmap.IsValidBit" [
             testCase "1st and 18th bit are valid bits in the bitmap" <| fun() -> 
                 bitmap |> Bitmap.isValidBit 1 =! true
                 bitmap |> Bitmap.isValidBit 18 =! true
@@ -171,7 +171,7 @@ module Bitmap =
 
     [<Tests>]
     let generalCases =
-        testList "Bitmap.General." [
+        testList "Bitmap.General" [
             testCase "the length of 111011010110010101 is 18" <| fun () -> 
                 bitmap |> Bitmap.length =! Ok 18
 
