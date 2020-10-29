@@ -1,11 +1,11 @@
-﻿namespace Cmhd.SuccintDataStructures
+﻿namespace Cmhd.SuccinctDataStructures
 
 /// Bitmap type representing an array of bits; because of the limitations of 
 /// numeric types its implemented as a byte[]    
 type Bitmap
 
 /// Bitmap module implementing rank and select operations. The ideas behind the
-/// specifics of this module are inpired in the paper PRACTICAL IMPLEMENTATION
+/// specifics of this module are inspired in the paper PRACTICAL IMPLEMENTATION
 /// OF RANK AND SELECT QUERIES  
 module Bitmap =
     /// <summary>

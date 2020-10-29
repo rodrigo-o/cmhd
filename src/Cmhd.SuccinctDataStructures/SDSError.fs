@@ -1,4 +1,4 @@
-﻿namespace Cmhd.SuccintDataStructures
+﻿namespace Cmhd.SuccinctDataStructures
 
 /// Bitmap related errors
 type BitmapError =
@@ -8,7 +8,7 @@ type BitmapError =
     | IndexOutOfBound of length: int * index: int
     | ImplIndexOutOfBound of implLength: int * implIndex: int
     
-/// SuccintDataStructures errors for simpler composition; it contains all kind 
+/// SuccinctDataStructures errors for simpler composition; it contains all kind 
 /// of errors
 type SDSError =
     | BitmapError of BitmapError

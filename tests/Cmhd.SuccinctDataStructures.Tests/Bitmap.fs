@@ -1,36 +1,41 @@
-namespace Cmhd.SuccintDataStructures.Tests
+namespace Cmhd.SuccinctDataStructures.Tests
+
+#nowarn "25"
 
 open Expecto
 open Swensen.Unquote
-open Cmhd.SuccintDataStructures
+open Cmhd.SuccinctDataStructures
 
-module Bitmap =
-    // function for correct bitmap creation
-    let bitmapCreation byteArr =
-        match Bitmap.ofByteArray byteArr with
-        | Ok bitmap -> bitmap
+module Bitmap =   
 
     // 11 10110101 10010101
-    let bitmap = bitmapCreation [| byte 0b11; byte 0b10110101; byte 0b10010101 |]
+    let (Ok bitmap) = Bitmap.ofByteArray [| byte 0b11; byte 0b10110101; byte 0b10010101 |]
 
     [<Tests>]
     let tests =
         testList "Bitmap" [
-            testCase "cant create an empty bitmap" <| fun () -> 
-                Bitmap.ofByteArray [||] =! (Error <| BitmapError EmptyBitmap)
-            testCase "cant create a bitmap starting at 0" <| fun () -> 
-                Bitmap.ofByteArray [|0uy|] =! Bitmap.ofByteArray [|0uy; 4uy|]
-                
-                Bitmap.ofByteArray [|0uy; 7uy|] 
-                =! (Error <| BitmapError FirstByteIs0)
-  
-            testCase "the length of 111011010110010101 is 18" <| fun () -> 
-                bitmap |> Bitmap.length =! Ok 18
+            testList "creation" [
+                testCase "cant create an empty bitmap" <| fun () -> 
+                    Bitmap.ofByteArray [||] =! (Error <| BitmapError EmptyBitmap)
+                    
+                testCase "cant create a bitmap starting at 0" <| fun () -> 
+                    Bitmap.ofByteArray [|0uy|] =! Bitmap.ofByteArray [|0uy; 4uy|]
+                    
+                    Bitmap.ofByteArray [|0uy; 7uy|] 
+                    =! (Error <| BitmapError FirstByteIs0)
+
+                testCase "ofByteArray and ofString are analogous" <| fun () -> 
+                    let ofBytes = Bitmap.ofByteArray [| byte 0b11; byte 0b10110101; byte 0b10010101 |] 
+                    let ofString = Bitmap.ofString "111011010110010101"
+
+                    (Ok bitmap) =! ofBytes
+                    ofBytes =! ofString
+            ]
 
             testList "rank" [
                 testCase "up to the 1st position 111011010110010101 has 1 1s" <| fun () -> 
                     bitmap |> Bitmap.rank 1  =! Ok 1
-                testCase "up to the 1st position 111011010110010101 has 0 0s" <| fun () -> 
+                testCase $"up to the 1st position 111011010110010101 has 0 0s" <| fun () -> 
                     bitmap |> Bitmap.rank0 1  =! Ok 0
                 testCase "up to the 2nd position 111011010110010101 has 2 1s" <| fun () -> 
                     bitmap |> Bitmap.rank  2  =! Ok 2
@@ -50,6 +55,7 @@ module Bitmap =
                     bitmap |> Bitmap.rank0 17 =! Ok 7
                 testCase "up to the 18th position 111011010110010101 has 11 1s" <| fun () -> 
                     bitmap |> Bitmap.rank  18 =! Ok 11
+
                 testCase "a number larger than the length returns an error for both" <| fun () -> 
                     bitmap 
                     |> Bitmap.rank 21 
@@ -90,6 +96,7 @@ module Bitmap =
                     bitmap |> Bitmap.select0 7  =! Ok 17
                 testCase "the 11th 1 in 111011010110010101 is at position 18" <| fun () -> 
                     bitmap |> Bitmap.select 11 =! Ok 18
+
                 testCase "a number larger than the length returns an error" <| fun () -> 
                     bitmap 
                     |> Bitmap.select 21 
@@ -142,24 +149,26 @@ module Bitmap =
                     bitmap |> 
                     Bitmap.nthBit 40 
                     =! (Error <| BitmapError (IndexOutOfBound (18, 40)))
-              
-                testList "isValidBit" [
-                    testCase "1st and 18th bit are valid bits in the bitmap" <| fun() -> 
-                        bitmap |> Bitmap.isValidBit 1 =! true
-                        bitmap |> Bitmap.isValidBit 18 =! true
-                    
-                    testCase "0, negative numbers and 19+ are invalid bits in the bitmap" <| fun() -> 
-                        bitmap |> Bitmap.isValidBit 0 =! false
-                        bitmap |> Bitmap.isValidBit -1 =! false
-                        bitmap |> Bitmap.isValidBit 19 =! false
-                ]
-
-
-                testCase "Bitmap shold be capable of pretty printing" <| fun () ->
-                    sprintf "%O" bitmap 
-                    =! "Bitmap [| byte 0b11; byte 0b10110101; byte 0b10010101 |]"
-                
-                    sprintf "%A" bitmap 
-                    =! "Bitmap [| 11; 10110101; 10010101 |]"
             ]
+
+            testList "isValidBit" [
+                testCase "1st and 18th bit are valid bits in the bitmap" <| fun() -> 
+                    bitmap |> Bitmap.isValidBit 1 =! true
+                    bitmap |> Bitmap.isValidBit 18 =! true
+                
+                testCase "0, negative numbers and 19+ are invalid bits in the bitmap" <| fun() -> 
+                    bitmap |> Bitmap.isValidBit 0 =! false
+                    bitmap |> Bitmap.isValidBit -1 =! false
+                    bitmap |> Bitmap.isValidBit 19 =! false
+            ]
+
+            testCase "the length of 111011010110010101 is 18" <| fun () -> 
+                bitmap |> Bitmap.length =! Ok 18
+
+            testCase "Bitmap should be capable of pretty printing" <| fun () ->
+                sprintf "%O" bitmap 
+                =! "Bitmap [| byte 0b11; byte 0b10110101; byte 0b10010101 |]"
+            
+                sprintf "%A" bitmap 
+                =! "Bitmap [| 11; 10110101; 10010101 |]"
         ]

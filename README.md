@@ -1,8 +1,8 @@
 # CMHD
 Compact representation of Multidimensional data on Hierarchical Domains
 
-This repository is an attemp to implement a generalized form of the CMHD
-data structure presented and explainted in this papers:
+This repository is an attempt to implement a generalized form of the CMHD
+data structure presented and explained in this papers:
 
 - https://core.ac.uk/download/pdf/80522508.pdf
 - https://dsi.face.ubiobio.cl/mcaniupan/pdfs/SCCC2018CamReady.pdf
@@ -10,15 +10,15 @@ data structure presented and explainted in this papers:
 # Motivation
 
 This type of structure have a great impact in the way that systems could 
-represent and expose diferent views of the same data. In both papers; a 
+represent and expose different views of the same data. In both papers; a 
 two-dimensional data structure is discussed with examples; it's 
-my aim to implement a succint n-dimensional data structure such that it serves
+my aim to implement a succinct n-dimensional data structure such that it serves
 as open-source documentation of this type of structures and as a dependency for
 my detlqav project.
 
 # Roadmap
 
-The following are the succint data structures needed in order to implement the
+The following are the succinct data structures needed in order to implement the
 CMHD.
 
 - [x] Bitmap
@@ -36,7 +36,7 @@ data is represented and queried in it.
 
 I'd like to thank the Teams at Database Lab., University of A Coruña, Spain; 
 Dept. of Computer Science, University of Chile, Chile: and the University of 
-Bio-Bioin, Chile; for they high quality work who inspired me in my searching of 
+Bio-Bio, Chile; for they high quality work who inspired me in my searching of 
 a better way to do Dimensional querying as a service to use in data driven
 applications.
 

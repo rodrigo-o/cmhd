@@ -1,4 +1,4 @@
-﻿namespace Cmhd.SuccintDataStructures
+﻿namespace Cmhd.SuccinctDataStructures
 
 open Common
 open System.Text.RegularExpressions
@@ -10,20 +10,22 @@ type Bitmap =
     override this.ToString() =
         match this with
         | Bitmap byteArr -> 
-            sprintf "Bitmap %s" (byteArr |> byteArrayToString)
+            $"Bitmap {byteArr |> byteArrayToString}"
 
     member this.AsString = 
-        this.ToString().Replace("Bitmap", "")
-                       .Replace(" ", "")
-                       .Replace("byte0b", " ")
-                       .Replace("|]", " |]")
+        this.ToString()
+        |> String.clean "Bitmap"
+        |> String.clean " "
+        |> String.replaceString("byte0b", " ")
+        |> String.replaceString("|]", " |]")
+
 
 module Bitmap =
      
     [<AutoOpen>]
     module private Implementation =
         /// Population count array containing the number of set bits for a
-        /// given value (represented by the index), in this case it cointains
+        /// given value (represented by the index), in this case it contains
         /// the first 255 numbers a.k.a a byte
         let popCount =
             [| 0; 1; 1; 2; 1; 2; 2; 3; 1; 2; 2; 3; 2; 3; 3; 4; 1; 2; 2; 3; 2; 3;
@@ -160,14 +162,14 @@ module Bitmap =
                     | Ok prev -> Ok (act = searched && prev = (searched - 1))
         
         /// Binary Search a Bitmap using an argument function starting at half 
-        /// of the length of the Bitmap and steping into by half that, doing
-        /// the same recursively until it coud move only 1 step at a time.
+        /// of the length of the Bitmap and stepping into by half that, doing
+        /// the same recursively until it could move only 1 step at a time.
         let binarySearch func len searched bitmap = 
             let finished = binaryFinished func searched bitmap
             let position, step = len / 2, len / 4
             let initial = bitmap |> func position
 
-            // Dont using >>= here beacause of TCO in the recursive calls
+            // Don't using >>= here because of TCO in the recursive calls
             let rec search position step act =
                 match act with
                 | Error err -> Error err
@@ -188,7 +190,7 @@ module Bitmap =
             search position step initial
         
         /// Given a searched that must be the result of searchFunc applied to
-        /// a bitmap return the paramater for wich it finds the result
+        /// a bitmap return the parameter for which it finds the result
         let searchFor searched searchFunc bitmap =
             bitmap
             |> validateLength searched
@@ -212,7 +214,7 @@ module Bitmap =
             | ValidBitmap bitmapString -> bitmapString 
                                           |> stringToByteArray 
                                           |> validateByteArrayAsBitmap
-            | unkown -> Error <| BitmapError (UnidentifiedFormat unkown)
+            | unknown -> Error <| BitmapError (UnidentifiedFormat unknown)
 
 
 

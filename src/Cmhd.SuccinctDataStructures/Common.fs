@@ -1,8 +1,8 @@
-﻿namespace Cmhd.SuccintDataStructures
+﻿namespace Cmhd.SuccinctDataStructures
 
 open System
 
-/// Common compose operaotrs and errors for all Succint Data Structures
+/// Common compose operators and errors for all Succinct Data Structures
 module Common =
     /// Return the identity inside a Result
     let rid x = Ok x
@@ -54,3 +54,26 @@ module Common =
         |> Seq.append [| bitStringToByte string.[..firstLen - 1]|]
         |> Seq.toArray
 
+    //
+    // EXISTING MODULES MODIFICATIONS
+    //
+    // Added String functions to make Cleaning and replacing more convenient
+    module String =
+        /// <summary>
+        /// Clean the input string from a given one
+        /// </summary>
+        /// <param name="cleanThis"> string to be eliminated </param>
+        /// <param name="input"> input string </param>
+        /// <returns> The input string without any occurrence of cleanThis </returns>
+        let clean (cleanThis: string) (input: string) =
+            input.Replace(cleanThis, "")
+
+        /// <summary>
+        /// Replace a string with another one in the input string
+        /// </summary>
+        /// <param name="replaceThis"> string to be replaced </param>
+        /// <param name="withThis"> string that will replace replaceThis </param>
+        /// <param name="input"> input string </param>
+        /// <returns> The toClean String without any occurrence of cleanThis </returns>
+        let replaceString ((replaceThis: string), withThis) (input: string) = 
+            input.Replace(replaceThis, withThis)
