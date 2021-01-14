@@ -1,14 +1,14 @@
 #r "paket:
-nuget FSharp.Core 4.7.0
 nuget Fake.Core
-nuget Fake.IO
-nuget Fake.DotNet //"
+nuget Fake.Core.Target
+nuget Fake.DotNet.Cli
+nuget Fake.IO.FileSystem //"
 
 #load ".fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
 open Fake.DotNet
-open Fake.IO
+open Fake.IO 
 open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
 
