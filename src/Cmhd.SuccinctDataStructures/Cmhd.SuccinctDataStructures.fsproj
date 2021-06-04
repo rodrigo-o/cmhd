@@ -9,6 +9,8 @@
     <Compile Include="Common.fs" />
     <Compile Include="Bitmap.fsi" />
     <Compile Include="Bitmap.fs" />
+    <Compile Include="Louds.fsi" />
+    <Compile Include="Louds.fs" />
     <Compile Include="Cmhd.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />

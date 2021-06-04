@@ -12,6 +12,7 @@ type Bitmap =
         | Bitmap byteArr -> 
             $"Bitmap {byteArr |> byteArrayToString}"
 
+    /// Pretty printing member for %A prints
     member this.AsString = 
         this.ToString()
         |> String.clean "Bitmap"

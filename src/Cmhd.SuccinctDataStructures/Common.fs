@@ -4,6 +4,28 @@ open System
 
 /// Common compose operators and errors for all Succinct Data Structures
 module Common =
+    /// "At" operation that sets the first step of a SDS at a particular node, 
+    /// preparing it for usage with the bind operation.
+    let inline ( @ ) data node = Ok node, data
+
+    /// Bind operation defined for all Succint Data Structures (SDS)
+    let inline ( |>> ) (result, data) expr =
+        match result with
+        | Ok res -> res |> (fun x -> expr x data), data
+        | Error err -> Error err, data
+    
+    /// Final operation for the chaining of |>> (removes the unnecessary fst)
+    let inline ( |>= ) (result, _) expr =
+        match result with
+        | Ok res -> res |> (fun x -> expr x)
+        | Error err -> Error err
+    
+    /// Opposite to |>= it maps an error to a new one if it isn't Ok
+    let inline errorMap result mappedError =
+        match result with
+        | Error _ -> Error mappedError
+        | okRes -> okRes
+
     /// Return the identity inside a Result
     let rid x = Ok x
 
@@ -12,12 +34,6 @@ module Common =
         match m with
         | Error err -> Error err
         | Ok x -> f x
-
-    /// It maps an error to a new one if the result isn't Ok
-    let inline errorMap result mappedError =
-        match result with
-        | Error _ -> Error mappedError
-        | okRes -> okRes
     
     /// Function used to convert ByteArrays to Strings represented as 
     /// [|byte 0bxx|] i.e. [| 5uy; 7uy |] => "[| byte 0b101; byte 0b00000111 |]"
