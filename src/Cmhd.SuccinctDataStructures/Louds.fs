@@ -8,7 +8,7 @@ type Louds =
     | Louds of Bitmap   
 
     override this.ToString() =
-        let cleanBitmap = String.clean "Bitmap  "
+        let cleanBitmap = String.clean "Bitmap "
         
         match this with
         | Louds (bitmap) -> 
@@ -265,7 +265,7 @@ type Louds with
             String.Join("| ",separatedLevels) 
             |> String.replaceString("0", "0 ")
 
-        $"[| asString|]" 
+        $"[| {asString}|]" 
         
 
         

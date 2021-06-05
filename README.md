@@ -22,7 +22,7 @@ The following are the succinct data structures needed in order to implement the
 CMHD.
 
 - [x] Bitmap
-- [ ] Louds
+- [x] Louds
 - [ ] K^N Irregular Treap
 - [ ] CMHD
 

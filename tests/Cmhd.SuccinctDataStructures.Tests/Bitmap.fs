@@ -6,10 +6,10 @@ open Expecto
 open Swensen.Unquote
 open Cmhd.SuccinctDataStructures
 
-module Bitmap =   
+module BitmapTests =   
 
     // 11 10110101 10010101
-    let (Ok bitmap) = Bitmap.ofByteArray [| byte 0b11; byte 0b10110101; byte 0b10010101 |]
+    let bitmap = Data.bitmap
         
     [<Tests>]
     let creationCases =
