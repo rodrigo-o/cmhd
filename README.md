@@ -7,6 +7,13 @@ data structure presented and explained in this papers:
 - https://core.ac.uk/download/pdf/80522508.pdf
 - https://dsi.face.ubiobio.cl/mcaniupan/pdfs/SCCC2018CamReady.pdf
 
+# Build/Test steps
+
+- `dotnet tool restore`     | To install `fake` and `paket`
+- `dotnet paket restore`    | To install `paket.lock` defined packages
+- `dotnet restore`          | To restore the projects if needed
+- `dotnet test`             | To run tests
+
 # Motivation
 
 This type of structure have a great impact in the way that systems could 

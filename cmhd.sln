@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1D69297F-8C7A-4EC5-A116-A003BA2D04D5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Cmhd.SuccinctDataStructures", "src\Cmhd.SuccinctDataStructures\Cmhd.SuccinctDataStructures.fsproj", "{5B0F31EC-0D2F-473C-81EA-23888464F353}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{064ADB2D-80B3-4EC7-AD85-FF0E2CB2106F}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Cmhd.SuccinctDataStructures.Tests", "tests\Cmhd.SuccinctDataStructures.Tests\Cmhd.SuccinctDataStructures.Tests.fsproj", "{789EFFF0-B7FA-4094-9C01-484EC33CECCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B0F31EC-0D2F-473C-81EA-23888464F353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0F31EC-0D2F-473C-81EA-23888464F353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0F31EC-0D2F-473C-81EA-23888464F353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0F31EC-0D2F-473C-81EA-23888464F353}.Release|Any CPU.Build.0 = Release|Any CPU
+		{789EFFF0-B7FA-4094-9C01-484EC33CECCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{789EFFF0-B7FA-4094-9C01-484EC33CECCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{789EFFF0-B7FA-4094-9C01-484EC33CECCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{789EFFF0-B7FA-4094-9C01-484EC33CECCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5B0F31EC-0D2F-473C-81EA-23888464F353} = {1D69297F-8C7A-4EC5-A116-A003BA2D04D5}
+		{789EFFF0-B7FA-4094-9C01-484EC33CECCC} = {064ADB2D-80B3-4EC7-AD85-FF0E2CB2106F}
+	EndGlobalSection
+EndGlobal
