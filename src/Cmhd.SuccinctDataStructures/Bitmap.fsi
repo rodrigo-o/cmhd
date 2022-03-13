@@ -22,7 +22,7 @@ module Bitmap =
     /// Length of the bitmap
     /// </summary>        
     /// <param name="bitmap"> Bitmap data structure </param>
-    val length: bitmap: Bitmap -> Result<int,SDSError>
+    val length: bitmap: Bitmap -> int
         
     /// <summary>
     /// Given a position, it return the number of 1s up to that position in

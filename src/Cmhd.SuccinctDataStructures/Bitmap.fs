@@ -24,7 +24,7 @@ type Bitmap =
 module Bitmap =
      
     [<AutoOpen>]
-    module private Implementation =
+    module Implementation =
         /// Population count array containing the number of set bits for a
         /// given value (represented by the index), in this case it contains
         /// the first 255 numbers a.k.a a byte
@@ -42,56 +42,54 @@ module Bitmap =
                5; 6; 6; 7; 3; 4; 4; 5; 4; 5; 5; 6; 4; 5; 5; 6; 5; 6; 6; 7; 4; 5;
                5; 6; 5; 6; 6; 7; 5; 6; 6; 7; 6; 7; 7; 8 |]
         
-        /// Giving a value, it use it for referencing the popCount array by 
+        /// Giving a byte, it use it for referencing the popCount array by 
         /// the number of bits.
-        let popCountFor value = (popCount.[int value &&& 0xFF])
+        let popCountFor byte = (popCount.[int byte &&& 0xFF])
 
         /// Length of the byte array implementing the bitmap.
         let implLength (Bitmap byteArray) = byteArray |> Array.length
+        
+        /// Obtain the first byte of the bitmap.
+        let firstByte (Bitmap byteArray) = byteArray.[0]
 
         /// Obtain the nth byte of bitmap.
         let byteAt nth (Bitmap byteArray) =
             let len = byteArray |> Array.length
             match nth >= 1 && len >= nth with
             | true -> Ok byteArray.[nth - 1]
-            | _ -> Error <| BitmapError (ImplIndexOutOfBound (len, nth))
-            
-        /// Length of the first byte starting at the leftmost set bit.
-        let firstFromSetLength firstByte =
-            seq [0..7]
-            |> Seq.skipWhile (fun pos -> firstByte >>> pos <> 1uy)
-            |> Seq.head
-            |> fun res -> Ok (res + 1)        
-        
-        /// Obtain the first byte of the bitmap.
-        let firstByte = byteAt 1
+            | _ -> Error <| BitmapError (ImplIndexOutOfBound (len, nth))            
 
-        /// Length of the total bitmap both starting at the leftmost set bit. 
-        let totalFromSetLength bitmap =
+        /// Length of the first byte of a bitmap starting at the leftmost set bit.
+        let firstByteFromSetLength bitmap =
+            let byte = firstByte bitmap
+
+            [0..7]
+            |> List.skipWhile (fun index -> (byte >>> index) <> 1uy)
+            |> List.head
+            |> (+) 1
+
+        /// Length of the bitmap starting at the leftmost set bit. 
+        let fromSetLength bitmap =
             bitmap
-            |> firstByte
-            >>= firstFromSetLength
-            >>= fun fstLen -> Ok (fstLen + (implLength bitmap) * 8 - 8)
+            |> firstByteFromSetLength
+            |> fun fstLen -> (fstLen + (implLength bitmap - 1) * 8)
             
-        /// Given a n value and a bitmap validates that the value must be 
-        /// between 1 and the length returning the length.
-        let validateLength n bitmap =
+        /// Given a nth value and a bitmap validates that the value must be 
+        /// between 1 and the length of the bitmap, returning the length.
+        let withValidBitLength n bitmap =
             bitmap 
-            |> totalFromSetLength
-            >>= fun len -> 
+            |> fromSetLength
+            |> fun len -> 
                 if 1 <= n && n <= len
                 then Ok len 
                 else Error <| BitmapError (IndexOutOfBound (len, n)) 
 
         /// Given a n value and a bitmap validates that the value must be 
         /// between 1 and the length returning the length of the first byte.
-        let validateLengthAndFirst n bitmap =
+        let withValidBitFirstByteLength n bitmap =
             bitmap
-            |> validateLength n
-            >>= fun _ ->
-                bitmap
-                |> firstByte
-                >>= firstFromSetLength
+            |> withValidBitLength n
+            >>= fun _ -> Ok (bitmap |> firstByteFromSetLength)
         
         /// Given and mth position at the byte array it return it's nth bit due
         /// to a given shift
@@ -104,7 +102,7 @@ module Bitmap =
         /// Get the actual nth bit counting from the leftmost set bit.
         let nthFromSetBit nth bitmap =
             bitmap
-            |> validateLengthAndFirst nth
+            |> withValidBitFirstByteLength nth
             >>= fun fstLen ->
                 match nth <= fstLen, (nth - fstLen) % 8 with
                 | true , _ -> bitmap |> fromMthNthBit 1 (fstLen - nth)
@@ -125,7 +123,7 @@ module Bitmap =
         /// and return a tuple of indices to use for chunking
         let indicesForChunk n bitmap = 
             bitmap 
-            |> validateLengthAndFirst n
+            |> withValidBitFirstByteLength n
             >>= fun fstLen -> Ok (n, n - fstLen, (n - fstLen) % 8, fstLen)
 
         /// Given a tuple of indices return a chunk of the bitmap
@@ -156,7 +154,7 @@ module Bitmap =
             | false -> Ok false
             | true ->
                 bitmap
-                |> validateLength position
+                |> withValidBitLength position
                 >>= fun _ ->
                     match bitmap |> func (position - 1) with
                     | Error _ -> Ok true
@@ -194,7 +192,7 @@ module Bitmap =
         /// a bitmap return the parameter for which it finds the result
         let searchFor searched searchFunc bitmap =
             bitmap
-            |> validateLength searched
+            |> withValidBitLength searched
             >>= fun len -> 
                 bitmap |> binarySearch searchFunc len searched 
         
@@ -225,7 +223,7 @@ module Bitmap =
     
     let length bitmap =
         bitmap
-        |> totalFromSetLength
+        |> fromSetLength
     
     let rank position bitmap =
         bitmap
@@ -251,6 +249,6 @@ module Bitmap =
         |> nthFromSetBit nth
     
     let isValidBit nth bitmap =
-        match bitmap |> validateLength nth with
+        match bitmap |> withValidBitLength nth with
         | Error _ -> false
         | Ok _ -> true

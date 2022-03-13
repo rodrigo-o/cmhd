@@ -173,7 +173,7 @@ module BitmapTests =
     let generalCases =
         testList "Bitmap.General" [
             testCase "the length of 111011010110010101 is 18" <| fun () -> 
-                bitmap |> Bitmap.length =! Ok 18
+                bitmap |> Bitmap.length =! 18
 
             testCase "Bitmap should be capable of pretty printing" <| fun () ->
                 sprintf "%O" bitmap 

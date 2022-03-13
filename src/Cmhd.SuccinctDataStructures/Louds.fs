@@ -220,8 +220,9 @@ module Louds =
                 | Ok firstChild -> 
                     Ok ((firstChild - 2, firstChild), false)
                 | Error _ -> 
-                    (louds |> length) 
-                    >>= fun len -> Ok ((len - 1, len + 1), true)
+                    louds 
+                    |> length
+                    |> fun len -> Ok ((len - 1, len + 1), true)
 
     let rangeLevels louds = 
         let ranges = 
