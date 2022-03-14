@@ -93,3 +93,22 @@ module Common =
         /// <returns> The toClean String without any occurrence of cleanThis </returns>
         let replaceString ((replaceThis: string), withThis) (input: string) = 
             input.Replace(replaceThis, withThis)
+
+    // Added Result convinience function
+    module Result =
+        /// <summary>
+        /// Return function to convert a value to a Result.Ok
+        /// </summary>
+        /// <param name="value"> value to make a result </param>
+        /// <returns> A Result.Ok </returns>
+        let return' value = Ok value
+
+        /// <summary>
+        /// Check if the result is Ok
+        /// </summary>
+        /// <param name="result"> Result to check </param>
+        /// <returns> A boolean representing if the Result is Ok </returns>
+        let isOk result =
+            match result with
+            | Ok _ -> true
+            | Error _ -> false
