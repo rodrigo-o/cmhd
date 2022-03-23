@@ -11,20 +11,20 @@ module Common =
     /// Bind operation defined for all Succint Data Structures (SDS)
     let inline ( |>> ) (result, data) expr =
         match result with
-        | Ok res -> res |> (fun x -> expr x data), data
+        | Ok res -> (expr res data), data
         | Error err -> Error err, data
     
     /// Final operation for the chaining of |>> (removes the unnecessary fst)
     let inline ( |>= ) (result, _) expr =
         match result with
-        | Ok res -> res |> (fun x -> expr x)
+        | Ok res -> expr res
         | Error err -> Error err
     
     /// Opposite to |>= it maps an error to a new one if it isn't Ok
     let inline errorMap result mappedError =
         match result with
         | Error _ -> Error mappedError
-        | okRes -> okRes
+        | Ok res -> Ok res
 
     /// Return the identity inside a Result
     let rid x = Ok x

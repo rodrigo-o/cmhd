@@ -24,7 +24,7 @@ type Bitmap =
 module Bitmap =
      
     [<AutoOpen>]
-    module Implementation =
+    module private Implementation =
         /// Population count array containing the number of set bits for a
         /// given value (represented by the index), in this case it contains
         /// the first 255 numbers a.k.a a byte
