@@ -260,5 +260,4 @@ module Bitmap =
     
     let isValidBit nth bitmap = 
         bitmap 
-        |> isValidBit' nth 
-         
+        |> isValidBit' nth
