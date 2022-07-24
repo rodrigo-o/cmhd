@@ -11,6 +11,8 @@
     <Compile Include="Bitmap.fs" />
     <Compile Include="Louds.fsi" />
     <Compile Include="Louds.fs" />
+    <Compile Include="KNITreap.fsi" />
+    <Compile Include="KNITreap.fs" />
     <Compile Include="Cmhd.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
