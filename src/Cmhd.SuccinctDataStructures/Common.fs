@@ -6,28 +6,19 @@ open System
 module Common =
     /// "At" operation that sets the first step of a SDS at a particular node, 
     /// preparing it for usage with the bind operation.
-    let inline ( @ ) data node = Ok node, data
+    let inline ( |@| ) data node = Ok node, data
 
     /// Bind operation defined for all Succint Data Structures (SDS)
     let inline ( |>> ) (result, data) expr =
         match result with
-        | Ok res -> res |> (fun x -> expr x data), data
+        | Ok res -> (expr res data), data
         | Error err -> Error err, data
     
     /// Final operation for the chaining of |>> (removes the unnecessary fst)
     let inline ( |>= ) (result, _) expr =
         match result with
-        | Ok res -> res |> (fun x -> expr x)
+        | Ok res -> expr res
         | Error err -> Error err
-    
-    /// Opposite to |>= it maps an error to a new one if it isn't Ok
-    let inline errorMap result mappedError =
-        match result with
-        | Error _ -> Error mappedError
-        | okRes -> okRes
-
-    /// Return the identity inside a Result
-    let rid x = Ok x
 
     /// Result bind operator
     let ( >>= ) m f = 
@@ -93,3 +84,33 @@ module Common =
         /// <returns> The toClean String without any occurrence of cleanThis </returns>
         let replaceString ((replaceThis: string), withThis) (input: string) = 
             input.Replace(replaceThis, withThis)
+
+    // Added Result convinience function
+    module Result =
+        /// <summary>
+        /// Return function to convert a value to a Result.Ok
+        /// </summary>
+        /// <param name="value"> value to make a result </param>
+        /// <returns> A Result.Ok </returns>
+        let return' value = Ok value
+
+        /// <summary>
+        /// Check if the result is Ok
+        /// </summary>
+        /// <param name="result"> Result to check </param>
+        /// <returns> A boolean representing if the Result is Ok </returns>
+        let isOk result =
+            match result with
+            | Ok _ -> true
+            | Error _ -> false
+
+        /// <summary>
+        /// Map error to a new one only if it's an error
+        /// </summary>
+        /// <param name="result"> Result to check </param>
+        /// <param name="mappedError"> error that will replace the current one </param>
+        /// <returns> A Result with its error mapped </returns>
+        let inline mapError result mappedError =
+            match result with
+            | Error _ -> Error mappedError
+            | Ok res -> Ok res
