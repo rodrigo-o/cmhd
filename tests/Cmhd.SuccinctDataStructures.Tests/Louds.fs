@@ -40,47 +40,47 @@ module LoudsTest =
             testCase "root should be at index 1" <| fun () -> root =! 1
             testCase "second child of the root should be at index 4" <| fun () -> 
                 let secChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild
                     |>> Louds.nextSibling
-                    |>= rid
+                    |>= Result.return'
 
                 secChildRoot =! Ok 4
                 
             testCase "the third Child of the root is the same as the last child of the root" <| fun () ->
                 let thirdChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild
                     |>> Louds.nextSibling
                     |>> Louds.nextSibling
-                    |>= rid
+                    |>= Result.return'
 
                 let lastChildRoot = 
-                    louds @ root 
+                    louds |@| root 
                     |>> Louds.lastChild 
-                    |>= rid
+                    |>= Result.return'
 
                 thirdChildRoot =! lastChildRoot
 
             testCase "the root doesn't have a fourth child" <| fun () ->
                 let thirdChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild
                     |>> Louds.nextSibling
                     |>> Louds.nextSibling
-                    |>= rid
+                    |>= Result.return'
                 
                 match thirdChildRoot with
                 | Ok tcr -> 
                     let fourthChildRoot = 
-                        louds @ tcr 
+                        louds |@| tcr 
                         |>> Louds.nextSibling  
-                        |>= rid
+                        |>= Result.return'
                     
                     let fourthChildRoot2 = 
-                        louds @ root 
+                        louds |@| root 
                         |>> Louds.child 4
-                        |>= rid
+                        |>= Result.return'
 
                     fourthChildRoot
                     =! (Error <| LoudsError (InexistentNextSiblingFor tcr))
@@ -90,35 +90,35 @@ module LoudsTest =
 
             testCase "the first child doesn't have a previous sibling" <| fun () ->
                 let firstChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild
-                    |>= rid
+                    |>= Result.return'
 
                 match firstChildRoot with
                 | Ok fcr -> 
                     let prevFirstChildRoot = 
-                        louds @ fcr 
+                        louds |@| fcr 
                         |>> Louds.prevSibling  
-                        |>= rid
+                        |>= Result.return'
                     
                     prevFirstChildRoot
                     =! (Error <| LoudsError (InexistentPrevSiblingFor fcr))
             
             testCase "the second child of the third child of the root is at index 15" <| fun () ->
                 let sndChildThirdChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild 
                     |>> Louds.nextSibling
                     |>> Louds.nextSibling
                     |>> Louds.firstChild
                     |>> Louds.nextSibling
-                    |>= rid
+                    |>= Result.return'
 
                 let lastChildLastChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.lastChild
                     |>> Louds.lastChild
-                    |>= rid
+                    |>= Result.return'
 
                 sndChildThirdChildRoot =! lastChildLastChildRoot
                 lastChildLastChildRoot =! Ok 15
@@ -126,14 +126,14 @@ module LoudsTest =
 
             testCase "the parent of the node at index 15 is the third child of the root" <| fun () ->
                 let thirdChildRoot = 
-                    louds @ root 
+                    louds |@| root 
                     |>> Louds.lastChild
-                    |>= rid
+                    |>= Result.return'
 
                 let parentOf15 = 
-                    louds @ 15 
+                    louds |@| 15 
                     |>> Louds.parent
-                    |>= rid
+                    |>= Result.return'
 
                 thirdChildRoot =! parentOf15
             
@@ -142,59 +142,59 @@ module LoudsTest =
                 =! (Error <| LoudsError (InexistentParentFor 1))
 
             testCase "degree of root is 1 and degree of the first child of the root is 3" <| fun () ->
-                let degreeOfRoot = louds @ root |>> Louds.degree |>= rid
+                let degreeOfRoot = louds |@| root |>> Louds.degree |>= Result.return'
                 let degreeFirstChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild
                     |>> Louds.degree
-                    |>= rid
+                    |>= Result.return'
 
                 degreeOfRoot =! Ok 1                       
                 degreeFirstChildRoot =! Ok 3
 
             testCase "child quantity of root is 3 and of the first child of the root is 4" <| fun () ->
-                let childsOfRoot = louds @ root |>> Louds.childQty |>= rid
+                let childsOfRoot = louds |@| root |>> Louds.childQty |>= Result.return'
                 let childsFirstChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.firstChild
                     |>> Louds.childQty
-                    |>= rid
+                    |>= Result.return'
 
                 childsOfRoot =! Ok 3                       
                 childsFirstChildRoot =! Ok 4
 
             testCase "the second child of the root ocupy the second place among it's siblings" <| fun () ->
                 let sndChildRootRank = 
-                    louds @ root 
+                    louds |@| root 
                     |>> Louds.firstChild 
                     |>> Louds.nextSibling
                     |>> Louds.childRank
-                    |>= rid
+                    |>= Result.return'
                 
                 sndChildRootRank =! Ok 2
             
             testCase "the second child of the root should be the previous sibling of the last child" <| fun () ->
                 let sndChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.lastChild
                     |>> Louds.prevSibling
-                    |>= rid
+                    |>= Result.return'
                 
                 sndChildRoot =! Louds.child 2 root louds
             
             testCase "the second child of the third child of the root should be the next sibling of the first child of the last child of the root" <| fun () ->
                 let sndChildLastChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.lastChild
                     |>> Louds.firstChild
                     |>> Louds.nextSibling
-                    |>= rid
+                    |>= Result.return'
                 
                 let sndChildThirdChildRoot = 
-                    louds @ root
+                    louds |@| root
                     |>> Louds.child 3 
                     |>> Louds.child 2
-                    |>= rid
+                    |>= Result.return'
                 
                 sndChildLastChildRoot =! sndChildThirdChildRoot
             
@@ -205,9 +205,9 @@ module LoudsTest =
                 
                 let parents = List.map (fun (Ok x) -> x) [
                     Ok root
-                    louds @ 36 |>> Louds.parent |>> Louds.parent |>= rid
-                    louds @ 36 |>> Louds.parent |>= rid
-                    louds @ 36 |>= rid
+                    louds |@| 36 |>> Louds.parent |>> Louds.parent |>= Result.return'
+                    louds |@| 36 |>> Louds.parent |>= Result.return'
+                    louds |@| 36 |>= Result.return'
                 ]
                 
                 parents =! ancestors
@@ -222,12 +222,12 @@ module LoudsTest =
                 // This is bad, really really bad, but a lot of other 
                 // things have worked thanks to this , and i don't know 
                 // why xD
-                louds @ root
+                louds |@| root
                 |>> Louds.firstChild
                 |>> Louds.firstChild
                 |>> Louds.firstChild
                 |>> Louds.firstChild
-                |>= rid
+                |>= Result.return'
                 =! (Error <| LoudsError (InexistentChildFor 17))
         ]
 
@@ -235,65 +235,65 @@ module LoudsTest =
     let unrootedCases = 
         testList "Louds.Unrooted." [
             testCase "degree of node 2 should be 3" <| fun () ->
-                noRootedLouds @ 2
+                noRootedLouds |@| 2
                 |>> Louds.degree 
-                |>= rid =! Ok 3
+                |>= Result.return' =! Ok 3
                 
             testCase "child rank of node 2 should be 2" <| fun () ->
-                noRootedLouds @ 2
+                noRootedLouds |@| 2
                 |>> Louds.childRank 
-                |>= rid =! Ok 2
+                |>= Result.return' =! Ok 2
                 
             testCase "child quantity of node 2 should be 1" <| fun () ->
-                noRootedLouds @ 2
+                noRootedLouds |@| 2
                 |>> Louds.childQty 
-                |>= rid =! Ok 1
+                |>= Result.return' =! Ok 1
                 
             testCase "the second child of the first child of node 2 should be 25" <| fun () ->
-                let sndOfFirstChildOf2 = noRootedLouds @ 2
+                let sndOfFirstChildOf2 = noRootedLouds |@| 2
                                             |>> Louds.firstChild
                                             |>> Louds.firstChild
                                             |>> Louds.nextSibling
-                                            |>= rid
+                                            |>= Result.return'
                     
-                let sndOfFirstChildOf2SndForm = noRootedLouds @ 2
+                let sndOfFirstChildOf2SndForm = noRootedLouds |@| 2
                                                 |>> Louds.child 1
                                                 |>> Louds.child 2
-                                                |>= rid
+                                                |>= Result.return'
                     
-                let sndOfFirstChildOf2ThirdForm = noRootedLouds @ 2
+                let sndOfFirstChildOf2ThirdForm = noRootedLouds |@| 2
                                                     |>> Louds.firstChild
                                                     |>> Louds.lastChild
-                                                    |>= rid
+                                                    |>= Result.return'
 
                 sndOfFirstChildOf2 =! sndOfFirstChildOf2SndForm
                 sndOfFirstChildOf2 =! sndOfFirstChildOf2ThirdForm
                 sndOfFirstChildOf2 =! Ok 25
 
             testCase "the parent of the parent of node 25 should be 2" <| fun () ->
-                noRootedLouds @ 25
+                noRootedLouds |@| 25
                 |>> Louds.parent
                 |>> Louds.parent
-                |>= rid =! Ok 2
+                |>= Result.return' =! Ok 2
                 
             testCase "the ancestors for node 25 are [ 2; 10; 25 ]" <| fun () ->
                 let ancestors = 
                     noRootedLouds |> Louds.ancestors 25
                 
                 let parents = List.map (fun (Ok x) -> x) [
-                    noRootedLouds @ 25 |>> Louds.parent |>> Louds.parent |>= rid
-                    noRootedLouds @ 25 |>> Louds.parent |>= rid
-                    noRootedLouds @ 25 |>= rid
+                    noRootedLouds |@| 25 |>> Louds.parent |>> Louds.parent |>= Result.return'
+                    noRootedLouds |@| 25 |>> Louds.parent |>= Result.return'
+                    noRootedLouds |@| 25 |>= Result.return'
                 ]
                 
                 parents =! ancestors
                 ancestors =! [ 2; 10; 25 ]
 
             testCase "node 25 don't have a child" <| fun () ->
-                noRootedLouds @ 25
+                noRootedLouds |@| 25
                 |>> Louds.firstChild
                 |>> Louds.firstChild
-                |>= rid =! Error (LoudsError (InexistentChildFor 25))
+                |>= Result.return' =! Error (LoudsError (InexistentChildFor 25))
                 
             testCase "range per Level in Louds must be [|(1, 3); (5, 13); (15, 34)|]" <| fun () ->
                 noRootedLouds 

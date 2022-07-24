@@ -6,7 +6,7 @@ open System
 module Common =
     /// "At" operation that sets the first step of a SDS at a particular node, 
     /// preparing it for usage with the bind operation.
-    let inline ( @ ) data node = Ok node, data
+    let inline ( |@| ) data node = Ok node, data
 
     /// Bind operation defined for all Succint Data Structures (SDS)
     let inline ( |>> ) (result, data) expr =
@@ -19,15 +19,6 @@ module Common =
         match result with
         | Ok res -> expr res
         | Error err -> Error err
-    
-    /// Opposite to |>= it maps an error to a new one if it isn't Ok
-    let inline errorMap result mappedError =
-        match result with
-        | Error _ -> Error mappedError
-        | Ok res -> Ok res
-
-    /// Return the identity inside a Result
-    let rid x = Ok x
 
     /// Result bind operator
     let ( >>= ) m f = 
@@ -112,3 +103,14 @@ module Common =
             match result with
             | Ok _ -> true
             | Error _ -> false
+
+        /// <summary>
+        /// Map error to a new one only if it's an error
+        /// </summary>
+        /// <param name="result"> Result to check </param>
+        /// <param name="mappedError"> error that will replace the current one </param>
+        /// <returns> A Result with its error mapped </returns>
+        let inline mapError result mappedError =
+            match result with
+            | Error _ -> Error mappedError
+            | Ok res -> Ok res

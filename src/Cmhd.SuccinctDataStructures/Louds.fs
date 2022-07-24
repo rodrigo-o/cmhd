@@ -96,39 +96,39 @@ module Louds =
     let ofBitmap = validateBitmapAsLouds
     
     let firstChild node louds =
-        louds @ node 
+        louds |@| node 
         |>> rank 
         |>> select0
         |>= (fun nth -> 
             match isValidBit (nth + 1) louds with
             | true -> Ok (nth + 1)
             | false -> Error <| LoudsError (InexistentChildFor nth))
-        |> errorMap <| LoudsError (InexistentChildFor node)
+        |> Result.mapError <| LoudsError (InexistentChildFor node)
 
     let lastChild node louds =
-        louds @ node 
+        louds |@| node 
         |>> rank 
         |>> fun node _ -> Ok (node + 1)
         |>> select0 
         |>= fun nth -> Ok (nth - 1)
-        |> errorMap <| LoudsError (InexistentChildFor node)
+        |> Result.mapError <| LoudsError (InexistentChildFor node)
         
     let parent node louds =
-        louds @ node 
+        louds |@| node 
         |>> rank0 
         |>> select 
-        |>= rid
-        |> errorMap <| LoudsError (InexistentParentFor node)
+        |>= Result.return'
+        |> Result.mapError <| LoudsError (InexistentParentFor node)
 
     let nextSibling node louds =
-        louds @ (node + 1)
+        louds |@| (node + 1)
         |>> nthBit
         |>= function 
             | 1 -> Ok (node + 1) 
             | _ -> Error <| LoudsError (InexistentNextSiblingFor node)
 
     let prevSibling node louds =
-        louds @ (node - 1)
+        louds |@| (node - 1)
         |>> nthBit 
         |>= function 
             | 1 -> Ok (node - 1) 
@@ -140,7 +140,7 @@ module Louds =
         |> Seq.toList
 
     let child position node louds =
-        louds @ node 
+        louds |@| node 
         |>> firstChild 
         |>= fun fstChild ->        
             match position with
@@ -150,15 +150,15 @@ module Louds =
                 |> List.fold (fun acc _ -> 
                     acc
                     >>= fun node ->
-                        louds @ node |>> nextSibling |>= rid) (Ok fstChild)
-        |> errorMap <| LoudsError (InexistentNthChildFor (node, position))
+                        louds |@| node |>> nextSibling |>= Result.return') (Ok fstChild)
+        |> Result.mapError <| LoudsError (InexistentNthChildFor (node, position))
 
     let degree node louds =
         match louds |> isFromRoot node with
         | true -> louds |> select0 1 >>= (fun x -> Ok (x - 1))
         | false ->
-            let first = louds @ node |>> parent |>> firstChild |> fst
-            let last = louds @ node |>> parent |>> lastChild |> fst
+            let first = louds |@| node |>> parent |>> firstChild |> fst
+            let last = louds |@| node |>> parent |>> lastChild |> fst
             match first, last with
             | Ok firstVal, Ok lastVal -> Ok (lastVal - firstVal + 1)
             | Error err, _ -> Error err
@@ -168,16 +168,16 @@ module Louds =
         match louds |> isFromRoot node with
         | true -> Ok node
         | false -> 
-            louds @ node 
+            louds |@| node 
             |>> parent
             |>> firstChild 
             |>= fun firstSib -> Ok (node - firstSib + 1)
 
     let childQty node louds =
-        // FIXME: check that InexistetChildFor could be misleadig due to errorMap
-        louds @ node
+        // FIXME: check that InexistetChildFor could be misleadig due to Result.mapError
+        louds |@| node
         |>> firstChild
-        |>= rid
+        |>= Result.return'
         |> function 
             | Ok childNode -> louds |> degree childNode 
             | Error (LoudsError (InexistentChildFor _)) -> Ok 0
